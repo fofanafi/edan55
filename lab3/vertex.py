@@ -1,7 +1,6 @@
-class Vertex(object):
-  self.num = None
-  self.neighbors = []
+import sys
 
+class Vertex(object):
   def __init__(self, num, neighbors = []):
     self.num = num
     self.neighbors = neighbors
@@ -57,7 +56,7 @@ def findVertexOfMaxDegree(graph):
 
 def r0(graph):
   """
-  Returns (setSize, recursiveCount)
+  Returns (setSize, numRecursiveCalls)
   """
   if not graph:
     return (0, 1)
@@ -84,3 +83,12 @@ def r0(graph):
     return (setSize1 + 1, count1 + count2 + 1)
   else:
     return (setSize2, count1 + count2 + 1)
+
+def main():
+  numVertices = sys.argv[1]
+  graph = readGraph(numVertices)
+  (setSize, numCalls) = r0(graph)
+  print "setSize: ", setSize, "numCalls: ", numCalls
+
+if __name__ == "__main__":
+  main()
