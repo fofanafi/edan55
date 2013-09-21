@@ -40,6 +40,7 @@ def readGraph(numVertices):
     for j in range(numVertices):
       if edges[j] == '1':
         graph[i].addNeighbor(j)
+  return graph
 
 def findVertexOfDegree(n, graph):
   for i, vertex in graph.iteritems():
@@ -85,7 +86,7 @@ def r0(graph):
     return (setSize2, count1 + count2 + 1)
 
 def main():
-  numVertices = sys.argv[1]
+  numVertices = int(sys.argv[1])
   graph = readGraph(numVertices)
   (setSize, numCalls) = r0(graph)
   print "setSize: ", setSize, "numCalls: ", numCalls
