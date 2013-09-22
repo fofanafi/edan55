@@ -71,13 +71,11 @@ def r0(graph):
   i = findVertexOfMaxDegree(graph)
   g1 = graph.copy()
   v = g1.pop(i)
+  (setSize2, count2) = r0(g1)
+  
   for j in v.neighbors:
     g1.pop(j, None) # remove vertex j without throwing an error
   (setSize1, count1) = r0(g1)
-  
-  g2 = graph.copy()
-  g2.pop(i)
-  (setSize2, count2) = r0(g2)
 
   return (max(setSize1 + 1, setSize2), count1 + count2 + 1)
   
