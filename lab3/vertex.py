@@ -52,7 +52,7 @@ def findVertexOfMaxDegree(graph):
     degree = vertex.numEdges(graph)
     if degree > maximum[0]:
       maximum = (degree, i)
-  return maximum[1]
+  return maximum[1] 
 
 def r0(graph):
   """
@@ -80,11 +80,49 @@ def r0(graph):
   (setSize2, count2) = r0(g2)
 
   return (max(setSize1 + 1, setSize2), count1 + count2 + 1)
+  
+def r1(graph):
+  """
+  Returns (setSize, numRecursiveCalls)
+  """
+  if not graph:
+    return (0, 1)
+  
+  i = findVertexOfDegree(1, graph)
+  if i:
+    g = graph.copy()
+    g.pop(i) # remove vertex i, which has only 1 neighbor
+    g.pop(i.neighbors[0], None) # remove vertex j without throwing an error
+    (setSize, count) = r1(g)
+    return (setSize + 1, count + 1) 
+
+  i = findVertexOfDegree(0, graph)
+  if i:
+    g = graph.copy()
+    g.pop(i)
+    (setSize, count) = r1(g)
+    return (setSize + 1, count + 1) 
+
+  i = findVertexOfMaxDegree(graph)
+  g1 = graph.copy()
+  v = g1.pop(i)
+  for j in v.neighbors:
+    g1.pop(j, None) # remove vertex j without throwing an error
+  (setSize1, count1) = r1(g1)
+  
+  g2 = graph.copy()
+  g2.pop(i)
+  (setSize2, count2) = r1(g2)
+
+  return (max(setSize1 + 1, setSize2), count1 + count2 + 1)
 
 def main():
   numVertices = int(sys.argv[1])
   graph = readGraph(numVertices)
-  (setSize, numCalls) = r0(graph)
+  if sys.argv[2] == "r0":
+    (setSize, numCalls) = r0(graph)
+  elif sys.argv[2] == "r1":
+    (setSize, numCalls) = r0(graph)
   print "setSize: ", setSize, "numCalls: ", numCalls
 
 if __name__ == "__main__":
