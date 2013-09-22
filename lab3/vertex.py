@@ -1,9 +1,11 @@
 import sys
 
 class Vertex(object):
-  def __init__(self, num):
+  def __init__(self, num, neighbors = None):
+    if neighbors is None:
+      neighbors = []
     self.num = num
-    self.neighbors = []
+    self.neighbors = neighbors
   
   def addNeighbor(self, vertex):
     self.neighbors.append(vertex)
@@ -134,7 +136,7 @@ def r2(graph):
     neighbors = v.getNeighbors(graph)
     u = neighbors[0]
     w = neighbors[1]
-    if u not in graph[w].neighbors:
+    if u not in graph[w].getNeighbors(g):
       global numVertices
       neighbors = g[u].getNeighbors(g)
       for neighbor in g[w].getNeighbors(g):
