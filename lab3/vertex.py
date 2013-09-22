@@ -1,13 +1,12 @@
 import sys
 
 class Vertex(object):
-  def __init__(self, num, neighbors = []):
+  def __init__(self, num):
     self.num = num
-    self.neighbors = neighbors
+    self.neighbors = []
   
   def addNeighbor(self, vertex):
-    if vertex not in self.neighbors:
-      self.neighbors.append(vertex)
+    self.neighbors.append(vertex)
 
   def numEdges(self, vertexList):
     count = 0
@@ -80,10 +79,7 @@ def r0(graph):
   g2.pop(i)
   (setSize2, count2) = r0(g2)
 
-  if setSize1 > setSize2:
-    return (setSize1 + 1, count1 + count2 + 1)
-  else:
-    return (setSize2, count1 + count2 + 1)
+  return (max(setSize1 + 1, setSize2), count1 + count2 + 1)
 
 def main():
   numVertices = int(sys.argv[1])
