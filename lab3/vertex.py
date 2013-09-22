@@ -76,7 +76,7 @@ def r0(graph):
   for j in v.neighbors:
     g1.pop(j, None) # remove vertex j without throwing an error
   (setSize1, count1) = r0(g1)
-
+ 
   return (max(setSize1 + 1, setSize2), count1 + count2 + 1)
   
 def r1(graph):
