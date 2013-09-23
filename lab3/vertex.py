@@ -5,7 +5,7 @@ class Vertex(object):
     if neighbors is None:
       neighbors = []
     self.num = num
-    self.neighbors = neighbors
+    self.neighbors = neighbors[:]
   
   def addNeighbor(self, vertex):
     self.neighbors.append(vertex)
@@ -121,7 +121,6 @@ def r1(graph):
   
   return (max(setSize1 + 1, setSize2), count1 + count2 + 1)
 
-numVertices = 0
 def r2(graph):
   """
   Returns (setSize, numRecursiveCalls)
@@ -130,6 +129,30 @@ def r2(graph):
     return (0, 1)
 
   g = graph.copy()
+
+  i = findVertexOfDegree(2, graph)
+  if i is not None:
+    v = g.pop(i)
+    neighbors = v.getNeighbors(graph)
+    u = neighbors[0]
+    w = neighbors[1]
+    if u not in graph[w].neighbors:
+      global numVertices
+      neighbors = g[u].getNeighbors(g)
+      for n in g[w].getNeighbors(g):
+        if n not in neighbors:
+          neighbors.append(n)
+      z = Vertex(numVertices+1, neighbors)
+      for n in neighbors:
+        if n in g:
+          g[n].addNeighbor(z.num)
+      numVertices += 1
+      g[z.num] = z
+
+    g.pop(u)
+    g.pop(w)
+    (setSize, count) = r2(g)
+    return (setSize + 1, count + 1)
 
   i = findVertexOfDegree(1, graph)
   if i is not None:
@@ -144,29 +167,6 @@ def r2(graph):
     g.pop(i)
     (setSize, count) = r2(g)
     return (setSize + 1, count + 1) 
-
-  i = findVertexOfDegree(2, graph)
-  if i is not None:
-    v = g.pop(i)
-    neighbors = v.getNeighbors(graph)
-    u = neighbors[0]
-    w = neighbors[1]
-    if u not in graph[w].neighbors:
-      global numVertices
-      neighbors = g[u].getNeighbors(g)
-      for n in g[w].getNeighbors(g):
-        if n not in neighbors:
-          neighbors.append(n)
-      z = Vertex(numVertices, neighbors)
-      for n in neighbors:
-        g[n].addNeighbor(z.num)
-      numVertices += 1
-      g[z.num] = z
-
-    g.pop(u)
-    g.pop(w)
-    (setSize, count) = r2(g)
-    return (setSize + 1, count + 1)
 
   i = findVertexOfMaxDegree(graph)
   v = g.pop(i)
